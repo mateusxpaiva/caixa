@@ -12,7 +12,6 @@
 <meta name="theme-color" content="#EEF2F0">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-180.png">
-<link rel="manifest" href="manifest.webmanifest">
 <meta charset="utf-8">
 <style>*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -439,7 +438,7 @@ function api(fn,args){return fetch(API,{method:"POST",headers:{"Content-Type":"t
 function call(fn){const args=[PIN].concat([].slice.call(arguments,1));return api(fn,args).then(st=>{applyState(st)},e=>{pinErro(e);throw e})}
 function carregar(){if(!PIN){$("pin-gate").hidden=false;return}api("getState",[PIN]).then(st=>{$("pin-gate").hidden=true;try{localStorage.setItem("caixa-pin",PIN)}catch(x){}applyState(st)},e=>{if(!pinErro(e)){$("status").textContent="Sem conexão";$("h-sub").textContent=(e&&e.message)||"Tente de novo em instantes."}})}
 $("pin-form").addEventListener("submit",e=>{e.preventDefault();PIN=$("pin-in").value.replace(/\D/g,"");$("pin-err").hidden=true;carregar()});
-(function(){let k="";try{k=new URLSearchParams(location.search).get("k")||""}catch(e){}if(k){PIN=k;try{localStorage.setItem("caixa-pin",k);history.replaceState(null,"",location.pathname)}catch(e){}}carregar()})();
+(function(){let k="";try{k=new URLSearchParams(location.search).get("k")||""}catch(e){}if(k){PIN=k;try{localStorage.setItem("caixa-pin",k)}catch(e){}}carregar()})();
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&PIN&&S.ready)carregar()});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&S.ready)carregar()});
 setInterval(()=>{if(!document.hidden&&S.ready)carregar()},120000);
